@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodBoarder Pro - AI-Powered Design Inspiration</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- HTML2Canvas CDN for moodboard download functionality -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="app-title">🎨 MoodBoarder Pro</h1>
+            <p class="app-subtitle">Generate AI-powered visual moodboards for UI/UX design inspiration</p>
+            
+            <!-- Dark/Light Mode Toggle (Bonus Feature) -->
+            <div class="theme-toggle">
+                <button id="themeToggle" class="theme-btn" aria-label="Toggle dark/light mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="keywordInput" 
+                    class="keyword-input" 
+                    placeholder="Enter keywords like 'minimal dark UI', 'AI dashboard', 'file manager futuristic'..."
+                    maxlength="100"
+                >
+                <button id="generateBtn" class="generate-btn">
+                    <span class="btn-text">Generate Moodboard</span>
+                    <span class="btn-loader hidden">🔄</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Action Buttons Section -->
+        <section class="actions-section hidden" id="actionsSection">
+            <div class="action-buttons">
+                <button id="downloadBtn" class="action-btn download-btn">
+                    📥 Download Moodboard
+                </button>
+                <button id="analyzeBtn" class="action-btn analyze-btn">
+                    🤖 Get Design Suggestions
+                </button>
+            </div>
+        </section>
+
+        <!-- Moodboard Grid Section -->
+        <section class="moodboard-section">
+            <div id="moodboardGrid" class="moodboard-grid hidden">
+                <!-- Images will be dynamically populated here -->
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state hidden">
+                <div class="loading-spinner"></div>
+                <p>Fetching inspiration images...</p>
+            </div>
+        </section>
+
+        <!-- AI Analysis Section -->
+        <section class="analysis-section">
+            <div id="analysisPanel" class="analysis-panel hidden">
+                <h3 class="analysis-title">🎯 Design Analysis & Suggestions</h3>
+                <div id="analysisContent" class="analysis-content">
+                    <!-- AI-generated analysis will appear here -->
+                </div>
+                <div class="analysis-actions">
+                    <button id="downloadAnalysisBtn" class="action-btn secondary-btn">
+                        📄 Download Analysis
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Analysis Loading State -->
+            <div id="analysisLoading" class="analysis-loading hidden">
+                <div class="loading-spinner small"></div>
+                <p>AI is analyzing your moodboard...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 MoodBoarder Pro - Made for UI/UX Designers</p>
+            <p class="api-notice">📝 Configure your API keys in app.js to enable full functionality</p>
+        </footer>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="messageContainer" class="message-container"></div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
