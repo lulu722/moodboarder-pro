@@ -1,0 +1,25 @@
+{
+  "name": "MoodBoarder Pro - Figma Plugin",
+  "id": "com.moodboarder.figma-plugin",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "figjam"],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://api.pexels.com",
+      "https://images.pexels.com",
+      "https://images.unsplash.com",
+      "https://www.googleapis.com",
+      "https://uxagent1.openai.azure.com"
+    ]
+  },
+  "permissions": ["currentuser"],
+  "parameters": [
+    {
+      "name": "Search Keywords",
+      "key": "keywords",
+      "description": "Keywords to search for mood board images"
+    }
+  ]
+}

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="img-src https: data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <title>MoodBoarder Pro - Figma Plugin</title>
+    <style>
+        /* ===========================================
+           MoodBoarder Pro Figma 插件样式
+           基于原项目样式，适配 Figma 插件界面
+           =========================================== */
+        
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #5856eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --background: #ffffff;
+            --surface: #f9fafb;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --radius: 8px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background: var(--background);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            padding: 16px;
+            max-width: 100%;
+        }
+        
+        /* 头部区域 */
+        .header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+        
+        .header p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 搜索区域 */
+        .search-section {
+            margin-bottom: 20px;
+        }
+        
+        .search-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 14px;
+            transition: var(--transition);
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .search-btn {
+            padding: 10px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .search-btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+        
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .search-suggestions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion-tag {
+            padding: 4px 8px;
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .suggestion-tag:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        /* 消息提示 */
+        .message {
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        
+        .message.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            display: none;
+        }
+        
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 图片网格 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .image-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            background: var(--surface);
+        }
+        
+        .image-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .image-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 8px;
+            font-size: 10px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .image-item:hover .image-overlay {
+            opacity: 1;
+        }
+        
+        .image-source {
+            font-weight: 500;
+        }
+        
+        .image-photographer {
+            font-size: 9px;
+            opacity: 0.8;
+        }
+        
+        /* 骨架屏加载动画 */
+        .image-skeleton {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* 分析区域 */
+        .analysis-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            margin-top: 20px;
+        }
+        
+        .analysis-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 12px;
+        }
+        
+        .analysis-btn:hover:not(:disabled) {
+            background: #059669;
+        }
+        
+        .analysis-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .analysis-result {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .analysis-result h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .analysis-result strong {
+            color: var(--text-primary);
+        }
+        
+        .analysis-result em {
+            color: var(--text-secondary);
+            font-style: normal;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+        
+        /* 底部操作区 */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .close-btn {
+            padding: 8px 16px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-btn:hover {
+            background: var(--surface);
+            border-color: var(--text-secondary);
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 400px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-input-group {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--surface);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <div class="header">
+            <h1>🎨 MoodBoarder Pro</h1>
+            <p>AI-powered design inspiration for Figma</p>
+        </div>
+        
+        <!-- 搜索区域 -->
+        <div class="search-section">
+            <div class="search-input-group">
+                <input 
+                    type="text" 
+                    id="keywordInput" 
+                    class="search-input" 
+                    placeholder="Enter design keywords..."
+                    maxlength="100"
+                >
+                <button id="searchBtn" class="search-btn">
+                    <span class="btn-text">Search</span>
+                </button>
+            </div>
+            
+            <!-- 搜索建议标签 -->
+            <div class="search-suggestions">
+                <span class="suggestion-tag" data-keyword="minimalist ui">minimalist ui</span>
+                <span class="suggestion-tag" data-keyword="modern dashboard">dashboard</span>
+                <span class="suggestion-tag" data-keyword="mobile app">mobile app</span>
+                <span class="suggestion-tag" data-keyword="landing page">landing page</span>
+                <span class="suggestion-tag" data-keyword="dark theme">dark theme</span>
+            </div>
+        </div>
+        
+        <!-- 消息提示区域 -->
+        <div id="messageContainer" class="message"></div>
+        
+        <!-- 加载状态 -->
+        <div id="loadingState" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Searching for inspiration...</p>
+        </div>
+        
+        <!-- 图片网格 -->
+        <div id="imageGrid" class="image-grid"></div>
+        
+        <!-- 空状态 -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">🎨</div>
+            <p>Enter keywords above to find design inspiration</p>
+        </div>
+        
+        <!-- 分析区域 -->
+        <div class="analysis-section">
+            <button id="analyzeBtn" class="analysis-btn" disabled>
+                🤖 Get Design Suggestions
+            </button>
+            <div id="analysisResult" class="analysis-result"></div>
+        </div>
+        
+        <!-- 底部操作区 -->
+        <div class="footer">
+            <button id="closeBtn" class="close-btn">Close Plugin</button>
+        </div>
+    </div>
+    
+    <script src="ui.js"></script>
+</body>
+</html>
